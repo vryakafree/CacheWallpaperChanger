@@ -1,17 +1,17 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-del C:\Users\cevdatran1\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles\CachedImage_1920_1080_POS2.jpg
-cd C:\Users\cevdatran1\Desktop\Images
+del C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles\CachedImage_1920_1080_POS2.jpg
+cd C:\Users\%USERNAME%\Desktop\Images
 set n=0
 for %%f in (*.*) do (
    set /A n+=1
    set "file[!n!]=%%f"
 )
 set /A "rand=%random% %% n + 1
-copy "!file[%rand%]!" C:\Users\cevdatran1\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles
+copy "!file[%rand%]!" C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles
 
-cd C:\Users\cevdatran1\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles
+cd C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles
 for %%f in (*.*) do (
      ren %%f "CachedImage_1920_1080_POS2.jpg"
 )
