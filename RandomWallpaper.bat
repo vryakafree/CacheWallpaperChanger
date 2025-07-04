@@ -12,9 +12,10 @@ REM ----------------------
 REM Clean wallpaper cache
 REM ----------------------
 echo Cleaning existing wallpaper cache...
-set "WALLPAPER_CACHE=C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles\CachedImage_1920_1080_POS2.jpg"
-if exist "%WALLPAPER_CACHE%" (
-    del "%WALLPAPER_CACHE%"
+set "CACHE_FOLDER=C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles"
+if exist "%CACHE_FOLDER%" (
+    echo Removing existing cached wallpaper files...
+    del "%CACHE_FOLDER%\CachedImage_*.jpg" >nul 2>&1
     echo Existing wallpaper cache cleaned.
 ) else (
     echo No existing wallpaper cache found.
@@ -25,7 +26,6 @@ REM Select random image from Desktop
 REM ----------------------------------
 echo Selecting random wallpaper...
 set "IMAGE_FOLDER=C:\Users\%USERNAME%\Desktop\Images"
-set "CACHE_FOLDER=C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles"
 
 if not exist "%IMAGE_FOLDER%" (
     echo ERROR: Images folder not found at %IMAGE_FOLDER%
@@ -54,6 +54,16 @@ REM Select random file
 set /A "rand=%random% %% n + 1"
 echo Selected image: !file[%rand%]!
 
+REM ----------------------------------
+REM Get screen resolution dynamically
+REM ----------------------------------
+echo Detecting screen resolution...
+for /f "tokens=1,2" %%a in ('powershell "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.Screen]::PrimaryScreen.Bounds.Width, [System.Windows.Forms.Screen]::PrimaryScreen.Bounds.Height"') do (
+    set "SCREEN_WIDTH=%%a"
+    set "SCREEN_HEIGHT=%%b"
+)
+echo Screen resolution: %SCREEN_WIDTH%x%SCREEN_HEIGHT%
+
 REM Copy random image to cache folder
 if not exist "%CACHE_FOLDER%" mkdir "%CACHE_FOLDER%"
 copy "!file[%rand%]!" "%CACHE_FOLDER%" >nul
@@ -68,11 +78,15 @@ REM Rename to wallpaper format
 REM ----------------------------
 echo Setting up wallpaper cache...
 cd /d "%CACHE_FOLDER%"
+set "TARGET_NAME=CachedImage_%SCREEN_WIDTH%_%SCREEN_HEIGHT%_POS2.jpg"
 for %%f in (*.*) do (
-    if /i not "%%f"=="CachedImage_1920_1080_POS2.jpg" (
-        ren "%%f" "CachedImage_1920_1080_POS2.jpg" >nul 2>&1
+    if /i not "%%f"=="%TARGET_NAME%" (
+        ren "%%f" "%TARGET_NAME%" >nul 2>&1
+        echo Renamed to: %TARGET_NAME%
+        goto :renamed
     )
 )
+:renamed
 
 REM ----------------------------
 REM Save current folder paths
@@ -118,4 +132,5 @@ rd /s /q C:\$Recycle.Bin >nul 2>&1
 
 echo Random wallpaper setup complete!
 echo New wallpaper: !file[%rand%]!
+echo Cached as: %TARGET_NAME%
 exit
