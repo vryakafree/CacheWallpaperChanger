@@ -12,7 +12,7 @@ REM ----------------------
 REM Clean wallpaper cache
 REM ----------------------
 echo Cleaning wallpaper cache...
-set "WALLPAPER_CACHE=C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles\CachedImage_1920_1080_POS2.jpg"
+set "WALLPAPER_CACHE=C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles\*.jpg"
 if exist "%WALLPAPER_CACHE%" (
     del "%WALLPAPER_CACHE%"
     echo Wallpaper cache cleaned.
