@@ -12,7 +12,7 @@ REM ----------------------
 REM Clean wallpaper cache
 REM ----------------------
 echo Cleaning existing wallpaper cache...
-set "WALLPAPER_CACHE=C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles\CachedImage_1920_1080_POS2.jpg"
+set "WALLPAPER_CACHE=C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles\*.jpg"
 if exist "%WALLPAPER_CACHE%" (
     del "%WALLPAPER_CACHE%"
     echo Existing wallpaper cache cleaned.
@@ -23,8 +23,8 @@ if exist "%WALLPAPER_CACHE%" (
 REM ----------------------------------
 REM Select random image from Desktop
 REM ----------------------------------
-echo Selecting random wallpaper...
-set "IMAGE_FOLDER=C:\Users\%USERNAME%\Desktop\Images"
+echo Selecting random wallpaper from your pictures...
+set "IMAGE_FOLDER=C:\Users\%USERNAME%\Pictures"
 set "CACHE_FOLDER=C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Themes\CachedFiles"
 
 if not exist "%IMAGE_FOLDER%" (
